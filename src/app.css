@@ -1005,3 +1005,16 @@ form {
     transition-duration: 0.01ms !important;
   }
 }
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:focus-visible {
+  outline: none;
+}
