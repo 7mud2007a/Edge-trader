@@ -5,7 +5,9 @@ function App() {
   const [direction, setDirection] = useState("next");
   const [error, setError] = useState("");
   const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
-  const [testMode, setTestMode] = useState(false);
+
+  const [mousePreview, setMousePreview] = useState(false);
+  const [cursor, setCursor] = useState({ x: 0, y: 0 });
 
   const switchPage = (nextPage) => {
     if (nextPage === page) return;
@@ -17,56 +19,101 @@ function App() {
     setPage(nextPage);
   };
 
-  const escapeButton = () => {
-    const angle = Math.random() * Math.PI * 2;
-    const radius = 22 + Math.random() * 28;
+  const moveButtonAway = (x, y, rect) => {
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const dx = centerX - x;
+    const dy = centerY - y;
+
+    const distance = Math.hypot(dx, dy);
+
+    if (distance > 125) {
+      setButtonPos({ x: 0, y: 0 });
+      return;
+    }
+
+    const angle = Math.atan2(dy, dx);
+
+    const strength = Math.min(
+      65,
+      28 + (125 - distance) * 0.45
+    );
 
     setButtonPos({
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
+      x: Math.cos(angle) * strength,
+      y: Math.sin(angle) * strength,
     });
   };
 
-  const handleTestTouch = (event) => {
-    if (!testMode || page !== "login") return;
+  const handleMouseMove = (event) => {
+    if (!mousePreview || page !== "login") return;
+
+    const area = event.currentTarget;
+    const rect = area.getBoundingClientRect();
+
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    setCursor({ x, y });
+
+    moveButtonAway(x, y, rect);
+  };
+
+  const handleTouchMove = (event) => {
+    if (!mousePreview || page !== "login") return;
 
     const touch = event.touches[0];
-    const rect = event.currentTarget.getBoundingClientRect();
+    const area = event.currentTarget;
+    const rect = area.getBoundingClientRect();
 
     const x = touch.clientX - rect.left;
     const y = touch.clientY - rect.top;
 
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+    setCursor({ x, y });
 
-    const distance = Math.hypot(x - centerX, y - centerY);
-
-    if (distance < 110) {
-      const angle = Math.atan2(
-        centerY - y,
-        centerX - x
-      );
-
-      const push = 45;
-
-      setButtonPos({
-        x: Math.cos(angle) * push,
-        y: Math.sin(angle) * push,
-      });
-    }
+    moveButtonAway(x, y, rect);
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleTouchStart = (event) => {
+    if (!mousePreview || page !== "login") return;
 
-    const form = new FormData(e.currentTarget);
+    const touch = event.touches[0];
+    const area = event.currentTarget;
+    const rect = area.getBoundingClientRect();
+
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    setCursor({ x, y });
+
+    moveButtonAway(x, y, rect);
+  };
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+
+    const form = new FormData(event.currentTarget);
 
     const email = form.get("email");
     const password = form.get("password");
 
     if (!email || !password || password.length < 6) {
       setError("The email or password is incorrect.");
-      escapeButton();
+
+      const area = event.currentTarget.querySelector(
+        ".button-area"
+      );
+
+      if (area) {
+        const rect = area.getBoundingClientRect();
+
+        setButtonPos({
+          x: 45,
+          y: -20,
+        });
+      }
+
       return;
     }
 
@@ -76,10 +123,10 @@ function App() {
     alert("Login ready — Supabase comes next.");
   };
 
-  const handleRegister = (e) => {
-    e.preventDefault();
+  const handleRegister = (event) => {
+    event.preventDefault();
 
-    const form = new FormData(e.currentTarget);
+    const form = new FormData(event.currentTarget);
 
     const name = form.get("name");
     const email = form.get("email");
@@ -172,17 +219,28 @@ function App() {
                 )}
 
                 <div
-                  className={`button-area ${
-                    testMode ? "touch-test-area" : ""
-                  }`}
-                  onTouchMove={handleTestTouch}
-                  onTouchStart={handleTestTouch}
+                  className="button-area"
+                  onMouseMove={handleMouseMove}
+                  onTouchMove={handleTouchMove}
+                  onTouchStart={handleTouchStart}
                 >
+
+                  {mousePreview && (
+                    <div
+                      className="fake-cursor"
+                      style={{
+                        left: cursor.x,
+                        top: cursor.y,
+                      }}
+                    >
+                      <div className="cursor-dot" />
+                    </div>
+                  )}
 
                   <div
                     className="thread"
                     style={{
-                      transform: `rotate(${Math.atan2(
+                      transform: `translateY(-50%) rotate(${Math.atan2(
                         buttonPos.y,
                         buttonPos.x
                       )}rad)`,
@@ -200,6 +258,7 @@ function App() {
                     }}
                   >
                     <span>Sign in</span>
+
                     <span className="button-arrow">
                       ↗
                     </span>
@@ -286,6 +345,7 @@ function App() {
                   type="submit"
                 >
                   <span>Create account</span>
+
                   <span className="button-arrow">
                     ↗
                   </span>
@@ -319,20 +379,21 @@ function App() {
           <span>MARKET INTELLIGENCE</span>
         </footer>
 
-        {page === "login" && (
-          <button
-            className="test-mode-button"
-            type="button"
-            onClick={() => {
-              setTestMode(!testMode);
-              setButtonPos({ x: 0, y: 0 });
-            }}
-          >
-            {testMode
-              ? "EXIT MOUSE PREVIEW"
-              : "MOUSE PREVIEW"}
-          </button>
-        )}
+        <button
+          className={`test-mode-button ${
+            mousePreview ? "active" : ""
+          }`}
+          type="button"
+          onClick={() => {
+            setMousePreview(!mousePreview);
+            setButtonPos({ x: 0, y: 0 });
+            setCursor({ x: 0, y: 0 });
+          }}
+        >
+          {mousePreview
+            ? "EXIT MOUSE PREVIEW"
+            : "MOUSE PREVIEW"}
+        </button>
 
       </section>
     </main>
