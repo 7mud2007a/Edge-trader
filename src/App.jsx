@@ -5,6 +5,7 @@ function App() {
   const [direction, setDirection] = useState("next");
   const [error, setError] = useState("");
   const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
+  const [testMode, setTestMode] = useState(false);
 
   const switchPage = (nextPage) => {
     if (nextPage === page) return;
@@ -26,10 +27,40 @@ function App() {
     });
   };
 
+  const handleTestTouch = (event) => {
+    if (!testMode || page !== "login") return;
+
+    const touch = event.touches[0];
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const distance = Math.hypot(x - centerX, y - centerY);
+
+    if (distance < 110) {
+      const angle = Math.atan2(
+        centerY - y,
+        centerX - x
+      );
+
+      const push = 45;
+
+      setButtonPos({
+        x: Math.cos(angle) * push,
+        y: Math.sin(angle) * push,
+      });
+    }
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
 
     const form = new FormData(e.currentTarget);
+
     const email = form.get("email");
     const password = form.get("password");
 
@@ -42,7 +73,6 @@ function App() {
     setError("");
     setButtonPos({ x: 0, y: 0 });
 
-    // Supabase authentication will be connected here.
     alert("Login ready — Supabase comes next.");
   };
 
@@ -50,6 +80,7 @@ function App() {
     e.preventDefault();
 
     const form = new FormData(e.currentTarget);
+
     const name = form.get("name");
     const email = form.get("email");
     const password = form.get("password");
@@ -60,6 +91,7 @@ function App() {
     }
 
     setError("");
+
     alert("Account ready — Supabase comes next.");
   };
 
@@ -72,6 +104,7 @@ function App() {
       <div className="light light-three" />
 
       <section className="auth-shell">
+
         <header className="brand">
           <div className="brand-icon">
             <span>M</span>
@@ -91,12 +124,15 @@ function App() {
 
           {page === "login" ? (
             <div className="auth-panel">
+
               <div className="top-label">
                 <span className="live-dot" />
                 MARKETS ONLINE
               </div>
 
-              <span className="eyebrow">WELCOME BACK</span>
+              <span className="eyebrow">
+                WELCOME BACK
+              </span>
 
               <h1>
                 Trade with
@@ -109,6 +145,7 @@ function App() {
               </p>
 
               <form onSubmit={handleLogin}>
+
                 <div className="field">
                   <input
                     name="email"
@@ -134,7 +171,14 @@ function App() {
                   </div>
                 )}
 
-                <div className="button-area">
+                <div
+                  className={`button-area ${
+                    testMode ? "touch-test-area" : ""
+                  }`}
+                  onTouchMove={handleTestTouch}
+                  onTouchStart={handleTestTouch}
+                >
+
                   <div
                     className="thread"
                     style={{
@@ -149,17 +193,25 @@ function App() {
                     className="primary-button"
                     type="submit"
                     style={{
-                      transform: `translate(${buttonPos.x}px, ${buttonPos.y}px)`,
+                      transform: `translate(
+                        ${buttonPos.x}px,
+                        ${buttonPos.y}px
+                      )`,
                     }}
                   >
                     <span>Sign in</span>
-                    <span className="button-arrow">↗</span>
+                    <span className="button-arrow">
+                      ↗
+                    </span>
                   </button>
+
                 </div>
               </form>
 
               <div className="switch-row">
-                <span>Don't have an account?</span>
+                <span>
+                  Don't have an account?
+                </span>
 
                 <button
                   type="button"
@@ -169,15 +221,19 @@ function App() {
                   Create account
                 </button>
               </div>
+
             </div>
           ) : (
             <div className="auth-panel">
+
               <div className="top-label">
                 <span className="live-dot" />
                 PRIVATE MARKET TERMINAL
               </div>
 
-              <span className="eyebrow">GET STARTED</span>
+              <span className="eyebrow">
+                GET STARTED
+              </span>
 
               <h1>
                 Build your
@@ -190,6 +246,7 @@ function App() {
               </p>
 
               <form onSubmit={handleRegister}>
+
                 <div className="field">
                   <input
                     name="name"
@@ -224,14 +281,22 @@ function App() {
                   </div>
                 )}
 
-                <button className="primary-button register-button" type="submit">
+                <button
+                  className="primary-button register-button"
+                  type="submit"
+                >
                   <span>Create account</span>
-                  <span className="button-arrow">↗</span>
+                  <span className="button-arrow">
+                    ↗
+                  </span>
                 </button>
+
               </form>
 
               <div className="switch-row">
-                <span>Already have an account?</span>
+                <span>
+                  Already have an account?
+                </span>
 
                 <button
                   type="button"
@@ -241,6 +306,7 @@ function App() {
                   Sign in
                 </button>
               </div>
+
             </div>
           )}
         </div>
@@ -252,6 +318,22 @@ function App() {
           <i />
           <span>MARKET INTELLIGENCE</span>
         </footer>
+
+        {page === "login" && (
+          <button
+            className="test-mode-button"
+            type="button"
+            onClick={() => {
+              setTestMode(!testMode);
+              setButtonPos({ x: 0, y: 0 });
+            }}
+          >
+            {testMode
+              ? "EXIT MOUSE PREVIEW"
+              : "MOUSE PREVIEW"}
+          </button>
+        )}
+
       </section>
     </main>
   );
