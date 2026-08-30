@@ -2,37 +2,116 @@ import { useState } from "react";
 
 function App() {
   const [page, setPage] = useState("login");
+  const [direction, setDirection] = useState("next");
+  const [error, setError] = useState("");
+  const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
 
   const switchPage = (nextPage) => {
     if (nextPage === page) return;
+
+    setDirection(nextPage === "register" ? "next" : "back");
+    setError("");
+    setButtonPos({ x: 0, y: 0 });
+
     setPage(nextPage);
+  };
+
+  const escapeButton = () => {
+    const angle = Math.random() * Math.PI * 2;
+    const radius = 22 + Math.random() * 28;
+
+    setButtonPos({
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius,
+    });
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const form = new FormData(e.currentTarget);
+    const email = form.get("email");
+    const password = form.get("password");
+
+    if (!email || !password || password.length < 6) {
+      setError("The email or password is incorrect.");
+      escapeButton();
+      return;
+    }
+
+    setError("");
+    setButtonPos({ x: 0, y: 0 });
+
+    // Supabase authentication will be connected here.
+    alert("Login ready — Supabase comes next.");
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    const form = new FormData(e.currentTarget);
+    const name = form.get("name");
+    const email = form.get("email");
+    const password = form.get("password");
+
+    if (!name || !email || !password || password.length < 6) {
+      setError("Please complete all fields correctly.");
+      return;
+    }
+
+    setError("");
+    alert("Account ready — Supabase comes next.");
   };
 
   return (
     <main className="app">
-      <div className="ambient ambient-one" />
-      <div className="ambient ambient-two" />
+      <div className="noise" />
+
+      <div className="light light-one" />
+      <div className="light light-two" />
+      <div className="light light-three" />
 
       <section className="auth-shell">
-        <div className="brand">
-          <div className="brand-mark">M</div>
-          <span>MARKET GLASS</span>
-        </div>
+        <header className="brand">
+          <div className="brand-icon">
+            <span>M</span>
+          </div>
 
-        <div className={`auth-window ${page}`}>
+          <div>
+            <strong>MARKET</strong>
+            <span>GLASS</span>
+          </div>
+        </header>
+
+        <div
+          className={`auth-window transition-${direction}`}
+          key={page}
+        >
+          <div className="glass-highlight" />
+
           {page === "login" ? (
             <div className="auth-panel">
+              <div className="top-label">
+                <span className="live-dot" />
+                MARKETS ONLINE
+              </div>
+
               <span className="eyebrow">WELCOME BACK</span>
 
-              <h1>Welcome<br />back.</h1>
+              <h1>
+                Trade with
+                <br />
+                clarity.
+              </h1>
 
               <p className="subtitle">
-                Analyze the market with clarity.
+                Your market intelligence, beautifully simplified.
               </p>
 
-              <form>
+              <form onSubmit={handleLogin}>
                 <div className="field">
                   <input
+                    name="email"
                     type="email"
                     placeholder="Email address"
                     autoComplete="email"
@@ -41,16 +120,42 @@ function App() {
 
                 <div className="field">
                   <input
+                    name="password"
                     type="password"
                     placeholder="Password"
                     autoComplete="current-password"
                   />
                 </div>
 
-                <button className="primary-button" type="submit">
-                  <span>Sign in</span>
-                  <span className="arrow">↗</span>
-                </button>
+                {error && (
+                  <div className="error-message">
+                    <span>!</span>
+                    {error}
+                  </div>
+                )}
+
+                <div className="button-area">
+                  <div
+                    className="thread"
+                    style={{
+                      transform: `rotate(${Math.atan2(
+                        buttonPos.y,
+                        buttonPos.x
+                      )}rad)`,
+                    }}
+                  />
+
+                  <button
+                    className="primary-button"
+                    type="submit"
+                    style={{
+                      transform: `translate(${buttonPos.x}px, ${buttonPos.y}px)`,
+                    }}
+                  >
+                    <span>Sign in</span>
+                    <span className="button-arrow">↗</span>
+                  </button>
+                </div>
               </form>
 
               <div className="switch-row">
@@ -67,17 +172,27 @@ function App() {
             </div>
           ) : (
             <div className="auth-panel">
+              <div className="top-label">
+                <span className="live-dot" />
+                PRIVATE MARKET TERMINAL
+              </div>
+
               <span className="eyebrow">GET STARTED</span>
 
-              <h1>Create<br />your account.</h1>
+              <h1>
+                Build your
+                <br />
+                edge.
+              </h1>
 
               <p className="subtitle">
-                Your market dashboard starts here.
+                Create your personal market intelligence terminal.
               </p>
 
-              <form>
+              <form onSubmit={handleRegister}>
                 <div className="field">
                   <input
+                    name="name"
                     type="text"
                     placeholder="Full name"
                     autoComplete="name"
@@ -86,6 +201,7 @@ function App() {
 
                 <div className="field">
                   <input
+                    name="email"
                     type="email"
                     placeholder="Email address"
                     autoComplete="email"
@@ -94,15 +210,23 @@ function App() {
 
                 <div className="field">
                   <input
+                    name="password"
                     type="password"
                     placeholder="Create password"
                     autoComplete="new-password"
                   />
                 </div>
 
-                <button className="primary-button" type="submit">
+                {error && (
+                  <div className="error-message">
+                    <span>!</span>
+                    {error}
+                  </div>
+                )}
+
+                <button className="primary-button register-button" type="submit">
                   <span>Create account</span>
-                  <span className="arrow">↗</span>
+                  <span className="button-arrow">↗</span>
                 </button>
               </form>
 
@@ -121,10 +245,13 @@ function App() {
           )}
         </div>
 
-        <div className="market-status">
-          <span className="status-dot" />
-          <span>MARKETS ONLINE</span>
-        </div>
+        <footer className="secure-footer">
+          <span>ENCRYPTED</span>
+          <i />
+          <span>PRIVATE</span>
+          <i />
+          <span>MARKET INTELLIGENCE</span>
+        </footer>
       </section>
     </main>
   );
