@@ -4,130 +4,36 @@ function App() {
   const [page, setPage] = useState("login");
   const [direction, setDirection] = useState("next");
   const [error, setError] = useState("");
-  const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
-
-  const [mousePreview, setMousePreview] = useState(false);
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
 
   const switchPage = (nextPage) => {
     if (nextPage === page) return;
 
     setDirection(nextPage === "register" ? "next" : "back");
     setError("");
-    setButtonPos({ x: 0, y: 0 });
-
     setPage(nextPage);
   };
 
-  const moveButtonAway = (x, y, rect) => {
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+  const handleLogin = (e) => {
+    e.preventDefault();
 
-    const dx = centerX - x;
-    const dy = centerY - y;
-
-    const distance = Math.hypot(dx, dy);
-
-    if (distance > 125) {
-      setButtonPos({ x: 0, y: 0 });
-      return;
-    }
-
-    const angle = Math.atan2(dy, dx);
-
-    const strength = Math.min(
-      65,
-      28 + (125 - distance) * 0.45
-    );
-
-    setButtonPos({
-      x: Math.cos(angle) * strength,
-      y: Math.sin(angle) * strength,
-    });
-  };
-
-  const handleMouseMove = (event) => {
-    if (!mousePreview || page !== "login") return;
-
-    const area = event.currentTarget;
-    const rect = area.getBoundingClientRect();
-
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    setCursor({ x, y });
-
-    moveButtonAway(x, y, rect);
-  };
-
-  const handleTouchMove = (event) => {
-    if (!mousePreview || page !== "login") return;
-
-    const touch = event.touches[0];
-    const area = event.currentTarget;
-    const rect = area.getBoundingClientRect();
-
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-
-    setCursor({ x, y });
-
-    moveButtonAway(x, y, rect);
-  };
-
-  const handleTouchStart = (event) => {
-    if (!mousePreview || page !== "login") return;
-
-    const touch = event.touches[0];
-    const area = event.currentTarget;
-    const rect = area.getBoundingClientRect();
-
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-
-    setCursor({ x, y });
-
-    moveButtonAway(x, y, rect);
-  };
-
-  const handleLogin = (event) => {
-    event.preventDefault();
-
-    const form = new FormData(event.currentTarget);
-
+    const form = new FormData(e.currentTarget);
     const email = form.get("email");
     const password = form.get("password");
 
     if (!email || !password || password.length < 6) {
       setError("The email or password is incorrect.");
-
-      const area = event.currentTarget.querySelector(
-        ".button-area"
-      );
-
-      if (area) {
-        const rect = area.getBoundingClientRect();
-
-        setButtonPos({
-          x: 45,
-          y: -20,
-        });
-      }
-
       return;
     }
 
     setError("");
-    setButtonPos({ x: 0, y: 0 });
 
     alert("Login ready — Supabase comes next.");
   };
 
-  const handleRegister = (event) => {
-    event.preventDefault();
+  const handleRegister = (e) => {
+    e.preventDefault();
 
-    const form = new FormData(event.currentTarget);
-
+    const form = new FormData(e.currentTarget);
     const name = form.get("name");
     const email = form.get("email");
     const password = form.get("password");
@@ -151,7 +57,6 @@ function App() {
       <div className="light light-three" />
 
       <section className="auth-shell">
-
         <header className="brand">
           <div className="brand-icon">
             <span>M</span>
@@ -171,7 +76,6 @@ function App() {
 
           {page === "login" ? (
             <div className="auth-panel">
-
               <div className="top-label">
                 <span className="live-dot" />
                 MARKETS ONLINE
@@ -192,7 +96,6 @@ function App() {
               </p>
 
               <form onSubmit={handleLogin}>
-
                 <div className="field">
                   <input
                     name="email"
@@ -218,52 +121,16 @@ function App() {
                   </div>
                 )}
 
-                <div
-                  className="button-area"
-                  onMouseMove={handleMouseMove}
-                  onTouchMove={handleTouchMove}
-                  onTouchStart={handleTouchStart}
-                >
-
-                  {mousePreview && (
-                    <div
-                      className="fake-cursor"
-                      style={{
-                        left: cursor.x,
-                        top: cursor.y,
-                      }}
-                    >
-                      <div className="cursor-dot" />
-                    </div>
-                  )}
-
-                  <div
-                    className="thread"
-                    style={{
-                      transform: `translateY(-50%) rotate(${Math.atan2(
-                        buttonPos.y,
-                        buttonPos.x
-                      )}rad)`,
-                    }}
-                  />
-
+                <div className="button-area">
                   <button
                     className="primary-button"
                     type="submit"
-                    style={{
-                      transform: `translate(
-                        ${buttonPos.x}px,
-                        ${buttonPos.y}px
-                      )`,
-                    }}
                   >
                     <span>Sign in</span>
-
                     <span className="button-arrow">
                       ↗
                     </span>
                   </button>
-
                 </div>
               </form>
 
@@ -275,16 +142,16 @@ function App() {
                 <button
                   type="button"
                   className="text-button"
-                  onClick={() => switchPage("register")}
+                  onClick={() =>
+                    switchPage("register")
+                  }
                 >
                   Create account
                 </button>
               </div>
-
             </div>
           ) : (
             <div className="auth-panel">
-
               <div className="top-label">
                 <span className="live-dot" />
                 PRIVATE MARKET TERMINAL
@@ -305,7 +172,6 @@ function App() {
               </p>
 
               <form onSubmit={handleRegister}>
-
                 <div className="field">
                   <input
                     name="name"
@@ -345,12 +211,10 @@ function App() {
                   type="submit"
                 >
                   <span>Create account</span>
-
                   <span className="button-arrow">
                     ↗
                   </span>
                 </button>
-
               </form>
 
               <div className="switch-row">
@@ -361,12 +225,13 @@ function App() {
                 <button
                   type="button"
                   className="text-button"
-                  onClick={() => switchPage("login")}
+                  onClick={() =>
+                    switchPage("login")
+                  }
                 >
                   Sign in
                 </button>
               </div>
-
             </div>
           )}
         </div>
@@ -378,23 +243,6 @@ function App() {
           <i />
           <span>MARKET INTELLIGENCE</span>
         </footer>
-
-        <button
-          className={`test-mode-button ${
-            mousePreview ? "active" : ""
-          }`}
-          type="button"
-          onClick={() => {
-            setMousePreview(!mousePreview);
-            setButtonPos({ x: 0, y: 0 });
-            setCursor({ x: 0, y: 0 });
-          }}
-        >
-          {mousePreview
-            ? "EXIT MOUSE PREVIEW"
-            : "MOUSE PREVIEW"}
-        </button>
-
       </section>
     </main>
   );
