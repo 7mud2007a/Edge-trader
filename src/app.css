@@ -11,24 +11,22 @@
     "Segoe UI",
     sans-serif;
 
-  color: #111214;
-  background: #f4f5f7;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  color: #111;
+  background: #fff;
 }
 
 html,
 body,
 #root {
+  margin: 0;
   width: 100%;
   min-height: 100%;
-  margin: 0;
 }
 
 body {
   min-height: 100vh;
   overflow-x: hidden;
-  background: #f4f5f7;
+  background: #fff;
 }
 
 button,
@@ -36,9 +34,9 @@ input {
   font: inherit;
 }
 
-button {
-  border: 0;
-}
+/* =========================
+   WHITE BACKGROUND
+========================= */
 
 .app {
   position: relative;
@@ -49,87 +47,75 @@ button {
   align-items: center;
   justify-content: center;
 
-  padding: 30px;
+  padding: 24px;
 
   overflow: hidden;
 
-  background:
-    radial-gradient(
-      circle at 10% 8%,
-      rgba(255, 255, 255, 1),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 90% 88%,
-      rgba(215, 220, 228, 0.75),
-      transparent 34%
-    ),
-    linear-gradient(
-      135deg,
-      #fafbfc,
-      #eef0f3
-    );
+  background: #ffffff;
 }
 
-/* Ambient lights */
+/* Soft glass light */
 
 .light {
   position: absolute;
 
-  width: 430px;
-  height: 430px;
+  width: 500px;
+  height: 500px;
 
   border-radius: 50%;
 
   pointer-events: none;
 
-  filter: blur(105px);
+  filter: blur(110px);
 
-  opacity: 0.45;
+  opacity: 0.7;
 
-  animation:
-    floatingLight 10s ease-in-out infinite alternate;
+  animation: floatLight 12s ease-in-out infinite alternate;
 }
 
 .light-one {
-  top: -260px;
-  left: -180px;
+  top: -330px;
+  left: -250px;
 
   background: rgba(255, 255, 255, 0.95);
 }
 
 .light-two {
-  right: -230px;
-  bottom: -250px;
+  right: -300px;
+  bottom: -300px;
 
-  background: rgba(198, 204, 214, 0.65);
+  background: rgba(225, 228, 234, 0.55);
 
-  animation-delay: -3s;
+  animation-delay: -4s;
 }
 
 .light-three {
-  width: 260px;
-  height: 260px;
+  width: 320px;
+  height: 320px;
 
   top: 45%;
   left: 50%;
 
-  background: rgba(255, 255, 255, 0.7);
+  transform: translate(-50%, -50%);
 
-  animation-delay: -6s;
+  background: rgba(245, 246, 248, 0.9);
+
+  animation-delay: -7s;
 }
 
-@keyframes floatingLight {
+@keyframes floatLight {
   from {
-    transform: translate3d(-12px, -8px, 0) scale(1);
+    transform: translate3d(-15px, -10px, 0);
   }
 
   to {
-    transform: translate3d(15px, 12px, 0) scale(1.08);
+    transform: translate3d(18px, 15px, 0);
   }
 }
 
-/* Noise */
+/* =========================
+   GLASS NOISE
+========================= */
 
 .noise {
   position: absolute;
@@ -137,20 +123,20 @@ button {
 
   pointer-events: none;
 
-  opacity: 0.025;
+  opacity: 0.018;
 
   background-image:
     radial-gradient(
-      #000 0.5px,
-      transparent 0.5px
+      rgba(0, 0, 0, 0.8) 0.45px,
+      transparent 0.45px
     );
 
   background-size: 5px 5px;
-
-  mix-blend-mode: multiply;
 }
 
-/* Shell */
+/* =========================
+   SHELL
+========================= */
 
 .auth-shell {
   position: relative;
@@ -160,18 +146,20 @@ button {
   width: min(100%, 480px);
 }
 
-/* Brand */
+/* =========================
+   BRAND
+========================= */
 
 .brand {
   display: flex;
   align-items: center;
 
-  gap: 12px;
+  gap: 11px;
 
   margin:
     0
     0
-    18px
+    16px
     8px;
 }
 
@@ -185,28 +173,23 @@ button {
   border-radius: 13px;
 
   background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.96),
-      rgba(235, 237, 240, 0.7)
-    );
+    rgba(255, 255, 255, 0.38);
 
   border:
     1px solid
-    rgba(255, 255, 255, 0.95);
+    rgba(255, 255, 255, 0.85);
 
   box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+    0 8px 30px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
 }
 
 .brand-icon span {
   font-size: 16px;
-  font-weight: 850;
-  letter-spacing: -0.05em;
+  font-weight: 900;
 }
 
 .brand > div:last-child {
@@ -218,35 +201,40 @@ button {
 
 .brand strong {
   font-size: 12px;
-  letter-spacing: 0.19em;
+
+  letter-spacing: 0.18em;
+
   font-weight: 850;
 }
 
 .brand > div:last-child span {
   margin-top: 4px;
 
-  color: #8b8e94;
+  color: rgba(0, 0, 0, 0.38);
 
   font-size: 8px;
-  font-weight: 700;
+
+  font-weight: 750;
 
   letter-spacing: 0.3em;
 }
 
-/* Glass */
+/* =========================
+   MAIN GLASS
+========================= */
 
 .auth-window {
   position: relative;
 
   overflow: hidden;
 
-  border-radius: 36px;
+  border-radius: 34px;
 
   background:
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.85),
-      rgba(255, 255, 255, 0.57)
+      rgba(255, 255, 255, 0.48),
+      rgba(255, 255, 255, 0.2)
     );
 
   border:
@@ -254,23 +242,26 @@ button {
     rgba(255, 255, 255, 0.95);
 
   box-shadow:
-    0 45px 100px rgba(28, 32, 39, 0.13),
-    0 15px 35px rgba(28, 32, 39, 0.07),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+    0 35px 90px rgba(0, 0, 0, 0.08),
+    0 8px 25px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.025);
 
   backdrop-filter:
-    blur(40px)
-    saturate(135%);
+    blur(45px)
+    saturate(150%);
 
   -webkit-backdrop-filter:
-    blur(40px)
-    saturate(135%);
+    blur(45px)
+    saturate(150%);
 
   will-change:
     transform,
     filter,
     opacity;
 }
+
+/* Glass reflection */
 
 .glass-highlight {
   position: absolute;
@@ -282,21 +273,23 @@ button {
   background:
     linear-gradient(
       125deg,
-      rgba(255, 255, 255, 0.72),
-      transparent 28%,
+      rgba(255, 255, 255, 0.8),
+      transparent 25%,
       transparent 70%,
-      rgba(255, 255, 255, 0.2)
+      rgba(255, 255, 255, 0.3)
     );
 
-  opacity: 0.8;
+  opacity: 0.75;
 }
 
-/* Page movement */
+/* =========================
+   PAGE TRANSITIONS
+========================= */
 
 .transition-next {
   animation:
     slideNext
-    0.42s
+    0.44s
     cubic-bezier(
       0.22,
       1,
@@ -308,7 +301,7 @@ button {
 .transition-back {
   animation:
     slideBack
-    0.42s
+    0.44s
     cubic-bezier(
       0.22,
       1,
@@ -319,17 +312,17 @@ button {
 
 @keyframes slideNext {
   0% {
-    opacity: 0.5;
+    opacity: 0;
 
     transform:
-      translateX(58px)
+      translateX(65px)
       scale(0.985);
 
-    filter: blur(14px);
+    filter: blur(18px);
   }
 
-  40% {
-    opacity: 0.85;
+  45% {
+    opacity: 0.8;
 
     filter: blur(7px);
   }
@@ -347,17 +340,17 @@ button {
 
 @keyframes slideBack {
   0% {
-    opacity: 0.5;
+    opacity: 0;
 
     transform:
-      translateX(-58px)
+      translateX(-65px)
       scale(0.985);
 
-    filter: blur(14px);
+    filter: blur(18px);
   }
 
-  40% {
-    opacity: 0.85;
+  45% {
+    opacity: 0.8;
 
     filter: blur(7px);
   }
@@ -373,7 +366,9 @@ button {
   }
 }
 
-/* Panel */
+/* =========================
+   PANEL
+========================= */
 
 .auth-panel {
   position: relative;
@@ -386,7 +381,7 @@ button {
     36px;
 
   animation:
-    contentIn
+    panelIn
     0.5s
     cubic-bezier(
       0.22,
@@ -396,12 +391,12 @@ button {
     );
 }
 
-@keyframes contentIn {
+@keyframes panelIn {
   from {
     opacity: 0;
 
     transform:
-      translateY(9px);
+      translateY(10px);
   }
 
   to {
@@ -412,7 +407,9 @@ button {
   }
 }
 
-/* Status */
+/* =========================
+   LABEL
+========================= */
 
 .top-label {
   display: inline-flex;
@@ -420,31 +417,33 @@ button {
 
   gap: 7px;
 
-  margin-bottom: 25px;
+  margin-bottom: 24px;
 
   padding:
     7px
     10px;
 
-  border-radius: 9px;
+  border-radius: 10px;
 
-  color: #8a8d93;
+  color:
+    rgba(0, 0, 0, 0.43);
 
   background:
-    rgba(255, 255, 255, 0.52);
+    rgba(255, 255, 255, 0.28);
 
   border:
     1px solid
     rgba(255, 255, 255, 0.75);
 
   box-shadow:
-    0 5px 16px rgba(0, 0, 0, 0.025),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 5px 20px rgba(0, 0, 0, 0.025);
 
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
 
   font-size: 8px;
+
   font-weight: 850;
 
   letter-spacing: 0.16em;
@@ -456,23 +455,27 @@ button {
 
   border-radius: 50%;
 
-  background: #55b979;
+  background: #55b879;
 
   box-shadow:
-    0 0 0 4px rgba(85, 185, 121, 0.08),
-    0 0 12px rgba(85, 185, 121, 0.35);
+    0 0 0 4px rgba(85, 184, 121, 0.08),
+    0 0 13px rgba(85, 184, 121, 0.35);
 }
 
-/* Text */
+/* =========================
+   TYPOGRAPHY
+========================= */
 
 .eyebrow {
   display: block;
 
-  margin-bottom: 14px;
+  margin-bottom: 13px;
 
-  color: #8b8e94;
+  color:
+    rgba(0, 0, 0, 0.38);
 
   font-size: 10px;
+
   font-weight: 850;
 
   letter-spacing: 0.2em;
@@ -481,7 +484,7 @@ button {
 h1 {
   margin: 0;
 
-  color: #111214;
+  color: #111;
 
   font-size:
     clamp(
@@ -505,23 +508,22 @@ h1 {
     0
     30px;
 
-  color: #777b82;
+  color:
+    rgba(0, 0, 0, 0.46);
 
   font-size: 13px;
 
   line-height: 1.55;
 }
 
-/* Form */
+/* =========================
+   INPUTS
+========================= */
 
 form {
   display: grid;
 
   gap: 10px;
-}
-
-.field {
-  position: relative;
 }
 
 .field input {
@@ -534,47 +536,52 @@ form {
 
   outline: none;
 
-  color: #17181b;
+  color: #111;
 
   border-radius: 17px;
 
   background:
-    rgba(255, 255, 255, 0.54);
+    rgba(255, 255, 255, 0.22);
 
   border:
     1px solid
-    rgba(255, 255, 255, 0.9);
+    rgba(255, 255, 255, 0.75);
 
   box-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.025),
-    0 6px 20px rgba(0, 0, 0, 0.025);
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.025),
+    0 7px 25px rgba(0, 0, 0, 0.025);
 
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
 
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .field input::placeholder {
-  color: #a0a3a9;
+  color:
+    rgba(0, 0, 0, 0.35);
 }
 
 .field input:focus {
   background:
-    rgba(255, 255, 255, 0.86);
+    rgba(255, 255, 255, 0.48);
 
   border-color:
-    rgba(20, 21, 24, 0.11);
+    rgba(0, 0, 0, 0.09);
 
   box-shadow:
-    0 0 0 4px rgba(0, 0, 0, 0.025),
-    0 9px 25px rgba(0, 0, 0, 0.045);
+    0 0 0 4px rgba(0, 0, 0, 0.018),
+    0 10px 30px rgba(0, 0, 0, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
-/* Error */
+/* =========================
+   ERROR
+========================= */
 
 .error-message {
   display: flex;
@@ -588,14 +595,18 @@ form {
 
   border-radius: 11px;
 
-  color: #6e5555;
+  color:
+    rgba(90, 45, 45, 0.8);
 
   background:
-    rgba(255, 244, 244, 0.72);
+    rgba(255, 245, 245, 0.35);
 
   border:
     1px solid
-    rgba(170, 100, 100, 0.1);
+    rgba(120, 60, 60, 0.08);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 
   font-size: 11px;
 
@@ -615,7 +626,7 @@ form {
   border-radius: 50%;
 
   background:
-    rgba(130, 60, 60, 0.08);
+    rgba(120, 60, 60, 0.07);
 
   font-weight: 800;
 }
@@ -636,7 +647,9 @@ form {
   }
 }
 
-/* Button */
+/* =========================
+   BUTTON AREA
+========================= */
 
 .button-area {
   position: relative;
@@ -648,6 +661,54 @@ form {
 
   touch-action: none;
 }
+
+/* =========================
+   THREAD
+========================= */
+
+.thread {
+  position: absolute;
+
+  z-index: 1;
+
+  width: 76px;
+  height: 1px;
+
+  left: 50%;
+  top: 50%;
+
+  transform-origin: left center;
+
+  pointer-events: none;
+
+  background:
+    rgba(0, 0, 0, 0.55);
+
+  opacity: 0.5;
+}
+
+.thread::before {
+  content: "";
+
+  position: absolute;
+
+  left: -3px;
+  top: 50%;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #111;
+
+  transform:
+    translateY(-50%);
+}
+
+/* =========================
+   BLACK GLASS BUTTON
+========================= */
 
 .primary-button {
   position: absolute;
@@ -676,15 +737,15 @@ form {
   color: #fff;
 
   background:
-    linear-gradient(
-      135deg,
-      #17181b,
-      #090a0c
-    );
+    rgba(15, 15, 16, 0.92);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.1);
 
   box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.17),
-    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+    0 17px 35px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
   transition:
     transform
@@ -699,7 +760,7 @@ form {
 
 .primary-button:hover {
   box-shadow:
-    0 20px 38px rgba(0, 0, 0, 0.2),
+    0 22px 42px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
@@ -717,70 +778,22 @@ form {
   border-radius: 10px;
 
   background:
-    rgba(255, 255, 255, 0.1);
+    rgba(255, 255, 255, 0.11);
 
   font-size: 17px;
 }
 
 .register-button {
   position: relative;
+
   inset: auto;
 
   margin-top: 8px;
 }
 
-/* Thread */
-
-.thread {
-  position: absolute;
-
-  z-index: 1;
-
-  width: 76px;
-  height: 1px;
-
-  left: 50%;
-  top: 50%;
-
-  transform-origin: left center;
-
-  pointer-events: none;
-
-  background: #111214;
-
-  opacity: 0.5;
-
-  transition:
-    transform
-    0.18s
-    cubic-bezier(
-      0.22,
-      1,
-      0.36,
-      1
-    );
-}
-
-.thread::before {
-  content: "";
-
-  position: absolute;
-
-  left: -3px;
-  top: 50%;
-
-  width: 6px;
-  height: 6px;
-
-  border-radius: 50%;
-
-  background: #111214;
-
-  transform:
-    translateY(-50%);
-}
-
-/* Fake mouse */
+/* =========================
+   FAKE CURSOR
+========================= */
 
 .fake-cursor {
   position: absolute;
@@ -807,20 +820,21 @@ form {
   border-radius: 50%;
 
   background:
-    rgba(255, 255, 255, 0.7);
+    rgba(255, 255, 255, 0.55);
 
   border:
-    2px solid
-    #111214;
+    2px solid #111;
 
   box-shadow:
-    0 4px 15px rgba(0, 0, 0, 0.2);
+    0 4px 18px rgba(0, 0, 0, 0.2);
 
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-/* Switch */
+/* =========================
+   SWITCH
+========================= */
 
 .switch-row {
   display: flex;
@@ -833,7 +847,8 @@ form {
 
   margin-top: 26px;
 
-  color: #888b91;
+  color:
+    rgba(0, 0, 0, 0.38);
 
   font-size: 11px;
 }
@@ -845,22 +860,29 @@ form {
 
   cursor: pointer;
 
-  border-radius: 7px;
+  border-radius: 8px;
 
-  color: #151619;
+  color: #111;
 
-  background: transparent;
+  background:
+    rgba(255, 255, 255, 0.18);
 
   font-size: 11px;
+
   font-weight: 800;
+
+  transition:
+    background 0.2s ease;
 }
 
 .text-button:hover {
   background:
-    rgba(0, 0, 0, 0.045);
+    rgba(255, 255, 255, 0.55);
 }
 
-/* Footer */
+/* =========================
+   FOOTER
+========================= */
 
 .secure-footer {
   display: flex;
@@ -871,9 +893,11 @@ form {
 
   margin-top: 17px;
 
-  color: #a0a3a9;
+  color:
+    rgba(0, 0, 0, 0.3);
 
   font-size: 8px;
+
   font-weight: 800;
 
   letter-spacing: 0.13em;
@@ -885,16 +909,19 @@ form {
 
   border-radius: 50%;
 
-  background: #b8bbc0;
+  background:
+    rgba(0, 0, 0, 0.22);
 }
 
-/* Test mode */
+/* =========================
+   TEST BUTTON
+========================= */
 
 .test-mode-button {
   display: block;
 
   margin:
-    14px
+    13px
     auto
     0;
 
@@ -904,37 +931,45 @@ form {
 
   border-radius: 10px;
 
-  color: #777;
+  cursor: pointer;
+
+  color:
+    rgba(0, 0, 0, 0.35);
+
+  background:
+    rgba(255, 255, 255, 0.28);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+}
+
+.test-mode-button.active {
+  color: #111;
 
   background:
     rgba(255, 255, 255, 0.55);
 
-  border:
-    1px solid
-    rgba(0, 0, 0, 0.06);
-
-  cursor: pointer;
-
-  font-size: 8px;
-  font-weight: 800;
-
-  letter-spacing: 0.12em;
-
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-}
-
-.test-mode-button.active {
-  color: #111214;
-
-  background:
-    rgba(255, 255, 255, 0.85);
-
   box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.07);
+    0 8px 25px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-/* Mobile */
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 560px) {
   .app {
@@ -946,7 +981,7 @@ form {
   }
 
   .auth-window {
-    border-radius: 29px;
+    border-radius: 30px;
   }
 
   .auth-panel {
@@ -985,8 +1020,6 @@ form {
   }
 }
 
-/* Small phones */
-
 @media (max-width: 380px) {
   .app {
     padding: 12px;
@@ -1010,12 +1043,13 @@ form {
   }
 }
 
-/* Reduced motion */
+/* =========================
+   REDUCED MOTION
+========================= */
 
 @media (prefers-reduced-motion: reduce) {
   *,
-  *::before,
-  *::after {
+  *::before {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
 
